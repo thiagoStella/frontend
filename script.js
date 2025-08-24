@@ -1,6 +1,9 @@
 // Boa prática: espera todo o conteúdo do HTML ser carregado antes de executar o JavaScript.
 document.addEventListener('DOMContentLoaded', () => {
 
+    // URL base da nossa API, usada por todas as funções
+    const apiBaseUrl = 'https://in6daks3fk.execute-api.us-east-2.amazonaws.com/dev';
+
     // --- LÓGICA PARA O FORMULÁRIO DE NOVO PEDIDO ---
     const formNovoPedido = document.getElementById('form-novo-pedido');
 
@@ -24,14 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log("Enviando payload para a API:", payloadFinal);
 
-            const apiUrl = 'https://in6daks3fk.execute-api.us-east-2.amazonaws.com/dev/pedidos';
+            const apiUrl = `${apiBaseUrl}/pedidos`;
 
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payloadFinal),
                 });
 
@@ -71,8 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(`Arquivo selecionado: ${nomeArquivo}`);
             alert(`Preparando para enviar o arquivo: ${nomeArquivo}...`);
 
-            const apiBaseUrl = 'https://in6daks3fk.execute-api.us-east-2.amazonaws.com/dev';
-
             try {
                 // ETAPA 1: Pedir a URL segura para o nosso backend
                 console.log('Pedindo URL de upload para a API...');
@@ -93,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const responseUpload = await fetch(uploadURL, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: arquivo // O objeto do arquivo é enviado diretamente no corpo
+                    body: arquivo
                 });
 
                 if (!responseUpload.ok) throw new Error('Falha ao enviar o arquivo para o S3.');
@@ -109,6 +108,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ESPAÇO PARA A LÓGICA DE MOSTRAR PEDIDOS ---
+    // --- LÓGICA PARA VISUALIZAR OS PEDIDOS ---
+    const btnMostrarPedidos = document.getElementById('btn-mostrar-pedidos');
+    const corpoTabelaPedidos = document.getElementById('corpo-tabela-pedidos');
+
+    if (btnMostrarPedidos) {
+        btnMostrarPedidos.addEventListener('click', async () => {
+            console.log("Buscando pedidos na API...");
+            alert("Buscando pedidos...");
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/pedidos`);
+                if (!response.ok) throw new Error('Falha ao buscar os pedidos.');
+
+                const pedidos = await response.json();
+                console.log("Pedidos recebidos:", pedidos);
+
+                // Limpa a tabela antes de adicionar as novas linhas
+                corpoTabelaPedidos.innerHTML = '';
+
+                if (pedidos.length === 0) {
+                    corpoTabelaPedidos.innerHTML = '<tr><td colspan="5">Nenhum pedido encontrado.</td></tr>';
+                    return;
+                }
+
+                // Cria as linhas da tabela dinamicamente
+                pedidos.forEach(pedido => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${pedido.pedidoId || 'N/A'}</td>
+                        <td>${pedido.clienteId || 'N/A'}</td>
+                        <td>${pedido.statusPedido || 'N/A'}</td>
+                        <td>${pedido.origem || 'API'}</td>
+                        <td>${new Date(pedido.timestampProcessamento || Date.now()).toLocaleString('pt-BR')}</td>
+                    `;
+                    corpoTabelaPedidos.appendChild(tr);
+                });
+
+            } catch (error) {
+                console.error("Erro ao buscar pedidos:", error);
+                alert(`Ocorreu um erro ao buscar os pedidos: ${error.message}`);
+                corpoTabelaPedidos.innerHTML = `<tr><td colspan="5">Erro ao carregar pedidos: ${error.message}</td></tr>`;
+            }
+        });
+    }
 
 });
