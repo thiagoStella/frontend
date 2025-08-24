@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // URL base da nossa API, usada por todas as funções
     const apiBaseUrl = 'https://in6daks3fk.execute-api.us-east-2.amazonaws.com/dev';
 
-    // --- LÓGICA PARA O FORMULÁRIO DE NOVO PEDIDO ---
+    // --- LÓGICA PARA O FORMULÁRIO DE NOVO PEDIDO (FASE 1) ---
     const formNovoPedido = document.getElementById('form-novo-pedido');
 
     if (formNovoPedido) {
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- LÓGICA PARA O UPLOAD DE ARQUIVOS ---
+    // --- LÓGICA PARA O UPLOAD DE ARQUIVOS (FASE 2) ---
     const formUploadArquivo = document.getElementById('form-upload-arquivo');
     const arquivoInput = document.getElementById('arquivoPedidos');
 
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA PARA VISUALIZAR OS PEDIDOS ---
+    // --- LÓGICA PARA VISUALIZAR OS PEDIDOS (FASE 3) ---
     const btnMostrarPedidos = document.getElementById('btn-mostrar-pedidos');
     const corpoTabelaPedidos = document.getElementById('corpo-tabela-pedidos');
 
@@ -116,6 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
         btnMostrarPedidos.addEventListener('click', async () => {
             console.log("Buscando pedidos na API...");
             alert("Buscando pedidos...");
+
+            // Opções para formatar a data de forma mais legível
+            const opcoesDeData = {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false // Usa formato 24h
+            };
 
             try {
                 const response = await fetch(`${apiBaseUrl}/pedidos`);
@@ -140,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${pedido.clienteId || 'N/A'}</td>
                         <td>${pedido.statusPedido || 'N/A'}</td>
                         <td>${pedido.origem || 'API'}</td>
-                        <td>${new Date(pedido.timestampProcessamento || Date.now()).toLocaleString('pt-BR')}</td>
+                        <td>${new Date(pedido.timestampProcessamento || Date.now()).toLocaleString('pt-BR', opcoesDeData)}</td>
                     `;
                     corpoTabelaPedidos.appendChild(tr);
                 });
