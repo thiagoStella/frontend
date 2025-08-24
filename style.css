@@ -36,36 +36,34 @@ header, footer {
 
 .container {
     width: 100%;
-    max-width: 1200px; /* Aumentado para comportar as colunas */
+    max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1.5rem;
     flex-grow: 1;
-    /* CÓDIGO NOVO PARA AS COLUNAS */
     display: flex;
-    gap: 2rem; /* Adiciona um espaço entre as colunas */
-    align-items: flex-start; /* Alinha as colunas no topo */
+    gap: 2rem; 
+    align-items: flex-start;
 }
 
-/* --- CÓDIGO NOVO: Definição das Colunas --- */
+/* --- 3. Definição das Colunas --- */
 .coluna-forms {
-    flex: 1; /* Ocupa uma parte do espaço */
+    flex: 1; 
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
 .coluna-tabela {
-    flex: 2; /* Ocupa duas partes do espaço (será mais larga) */
+    flex: 2;
 }
 
 
-/* --- 3. Estilo dos Cards --- */
+/* --- 4. Estilo dos Cards --- */
 .card {
     background-color: white;
     border-radius: 8px;
     box-shadow: var(--card-shadow);
     padding: 1.5rem 2rem;
-    /* Removido o margin-bottom para o controle das colunas */
 }
 
 h1 {
@@ -81,7 +79,7 @@ h2 {
     padding-bottom: 0.5rem;
 }
 
-/* --- 4. Estilos dos Formulários --- */
+/* --- 5. Estilos dos Formulários --- */
 .form-group {
     margin-bottom: 1rem;
 }
@@ -115,7 +113,7 @@ h2 {
 }
 
 
-/* --- 5. Estilos dos Botões --- */
+/* --- 6. Estilos dos Botões --- */
 .btn {
     display: inline-block;
     background-color: var(--primary-color);
@@ -139,7 +137,7 @@ h2 {
     margin-bottom: 1rem;
 }
 
-/* --- 6. Estilos da Tabela --- */
+/* --- 7. Estilos da Tabela --- */
 .table-container {
     overflow-x: auto;
 }
@@ -170,9 +168,15 @@ h2 {
     background-color: #dbeafe;
 }
 
-/* --- 7. Media Query para Telas Pequenas --- */
-@media (max-width: 900px) { /* Ajustado o ponto de quebra */
-    /* Em telas menores, as colunas ficam uma em cima da outra */
+/* --- 8. Ajustes Finos na Tabela --- */
+#tabela-pedidos th,
+#tabela-pedidos td {
+    white-space: nowrap; /* Impede a quebra de linha */
+}
+
+
+/* --- 9. Media Query para Telas Pequenas --- */
+@media (max-width: 900px) {
     .container {
         flex-direction: column;
     }
