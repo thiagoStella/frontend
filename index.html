@@ -1,11 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gerenciador de Pedidos AWS</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>Olá Mundo!</p>
+
+    <header>
+        <h1>Gerenciador de Pedidos Serverless</h1>
+    </header>
+
+    <main class="container">
+
+        <section class="card">
+            <h2>Criar Novo Pedido (via API)</h2>
+            <form id="form-novo-pedido">
+                <div class="form-group">
+                    <label for="pedidoId">ID do Pedido:</label>
+                    <input type="text" id="pedidoId" name="pedidoId" placeholder="Ex: pedido-api-001" required>
+                </div>
+                <div class="form-group">
+                    <label for="clienteId">ID do Cliente:</label>
+                    <input type="text" id="clienteId" name="clienteId" placeholder="Ex: cliente-xyz-123" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="produto">Nome do Produto:</label>
+                    <input type="text" id="produto" name="produto" placeholder="Ex: Caneta Azul" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" id="quantidade" name="quantidade" min="1" placeholder="Ex: 10" required>
+                </div>
+
+                <button type="submit" class="btn">Enviar Pedido</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Criar Pedidos em Lote (via S3)</h2>
+            <form id="form-upload-arquivo">
+                <div class="form-group">
+                    <label for="arquivoPedidos">Selecione o arquivo JSON:</label>
+                    <input type="file" id="arquivoPedidos" name="arquivoPedidos" accept=".json" required>
+                </div>
+                <button type="submit" class="btn">Enviar Arquivo</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Pedidos Processados no Sistema</h2>
+            <div class="actions">
+                <button id="btn-mostrar-pedidos" class="btn">Mostrar Pedidos</button>
+            </div>
+            <div class="table-container">
+                <table id="tabela-pedidos">
+                    <thead>
+                        <tr>
+                            <th>ID do Pedido</th>
+                            <th>ID do Cliente</th>
+                            <th>Status</th>
+                            <th>Origem</th>
+                            <th>Data de Processamento</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-tabela-pedidos">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer>
+        <p>Desenvolvido com a Arquitetura Serverless da Semana do Desenvolvedor</p>
+    </footer>
+
+    <script src="script.js" defer></script>
 </body>
 </html>
