@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // URL base da nossa API, usada por todas as funções
     const apiBaseUrl = 'https://in6daks3fk.execute-api.us-east-2.amazonaws.com/dev';
 
-    // --- LÓGICA PARA O FORMULÁRIO DE NOVO PEDIDO (FASE 1) ---
+    // --- LÓGICA PARA O FORMULÁRIO DE NOVO PEDIDO ---
     const formNovoPedido = document.getElementById('form-novo-pedido');
 
     if (formNovoPedido) {
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- LÓGICA PARA O UPLOAD DE ARQUIVOS (FASE 2) ---
+    // --- LÓGICA PARA O UPLOAD DE ARQUIVOS ---
     const formUploadArquivo = document.getElementById('form-upload-arquivo');
     const arquivoInput = document.getElementById('arquivoPedidos');
 
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA PARA VISUALIZAR OS PEDIDOS (FASE 3) ---
+    // --- LÓGICA PARA VISUALIZAR OS PEDIDOS ---
     const btnMostrarPedidos = document.getElementById('btn-mostrar-pedidos');
     const corpoTabelaPedidos = document.getElementById('corpo-tabela-pedidos');
 
@@ -132,7 +132,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!response.ok) throw new Error('Falha ao buscar os pedidos.');
 
                 const pedidos = await response.json();
-                console.log("Pedidos recebidos:", pedidos);
+                console.log("Pedidos recebidos (sem ordenar):", pedidos);
+
+                // Ordena a lista de pedidos em ordem decrescente (do mais novo para o mais antigo)
+                pedidos.sort((a, b) => {
+                    const dataB = new Date(b.timestampProcessamento || 0);
+                    const dataA = new Date(a.timestampProcessamento || 0);
+                    return dataB - dataA;
+                });
+                
+                console.log("Pedidos ordenados:", pedidos);
 
                 // Limpa a tabela antes de adicionar as novas linhas
                 corpoTabelaPedidos.innerHTML = '';
