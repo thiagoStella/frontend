@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adiciona o 'escutador' de evento para quando o formulário for submetido (evento 'submit')
     if (formNovoPedido) {
-        formNovoPedido.addEventListener('submit', (event) => {
+        formNovoPedido.addEventListener('submit', async (event) => {
             // 1. Boa Prática: Previne o comportamento padrão do navegador, que é recarregar a página.
             // Isso nos permite controlar o que acontece com os dados.
             event.preventDefault();
@@ -35,8 +35,37 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             console.log("Payload JSON pronto para enviar para a API:", payloadFinal);
-            alert("Payload pronto! Verifique o console para ver o JSON."); // Alerta para feedback visual
+            // ... (dentro do seu addEventListener, logo após a criação da 'payloadFinal')
 
+console.log("Payload JSON pronto para enviar para a API:", payloadFinal);
+
+const apiUrl = 'https://in6daks3fk.execute-api.us-east-2.amazonaws.com/dev/pedidos';
+
+try {
+    const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payloadFinal),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        // Se a API retornar um erro (ex: 4xx, 5xx), ele será capturado aqui
+        throw new Error(data.message || 'Erro desconhecido da API');
+    }
+
+    console.log('Sucesso:', data);
+    alert('Pedido enviado com sucesso! Mensagem da API: ' + data.message);
+    formNovoPedido.reset(); // Limpa o formulário após o sucesso
+
+} catch (error) {
+    // O erro de CORS vai aparecer no CONSOLE, não necessariamente aqui no catch.
+    console.error('Erro na chamada fetch:', error);
+    alert('Ocorreu um erro ao enviar o pedido. Verifique o console do navegador para detalhes (provavelmente CORS).');
+}
 
         });
     }
