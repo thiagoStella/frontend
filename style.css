@@ -36,11 +36,28 @@ header, footer {
 
 .container {
     width: 100%;
-    max-width: 960px;
+    max-width: 1200px; /* Aumentado para comportar as colunas */
     margin: 2rem auto;
     padding: 0 1.5rem;
     flex-grow: 1;
+    /* CÓDIGO NOVO PARA AS COLUNAS */
+    display: flex;
+    gap: 2rem; /* Adiciona um espaço entre as colunas */
+    align-items: flex-start; /* Alinha as colunas no topo */
 }
+
+/* --- CÓDIGO NOVO: Definição das Colunas --- */
+.coluna-forms {
+    flex: 1; /* Ocupa uma parte do espaço */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.coluna-tabela {
+    flex: 2; /* Ocupa duas partes do espaço (será mais larga) */
+}
+
 
 /* --- 3. Estilo dos Cards --- */
 .card {
@@ -48,7 +65,7 @@ header, footer {
     border-radius: 8px;
     box-shadow: var(--card-shadow);
     padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
+    /* Removido o margin-bottom para o controle das colunas */
 }
 
 h1 {
@@ -124,7 +141,7 @@ h2 {
 
 /* --- 6. Estilos da Tabela --- */
 .table-container {
-    overflow-x: auto; /* Garante que a tabela não quebre o layout em telas pequenas */
+    overflow-x: auto;
 }
 
 #tabela-pedidos {
@@ -154,20 +171,9 @@ h2 {
 }
 
 /* --- 7. Media Query para Telas Pequenas --- */
-@media (max-width: 600px) {
+@media (max-width: 900px) { /* Ajustado o ponto de quebra */
+    /* Em telas menores, as colunas ficam uma em cima da outra */
     .container {
-        padding: 0 1rem;
-    }
-
-    .card {
-        padding: 1rem;
-    }
-    
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    h2 {
-        font-size: 1.25rem;
+        flex-direction: column;
     }
 }
