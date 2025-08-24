@@ -47,14 +47,14 @@ header, footer {
 
 /* --- 3. Definição das Colunas --- */
 .coluna-forms {
-    flex: 1; 
+    flex: 0 0 400px; /* Não cresce, не encolhe, e tem uma base de 400px de largura */
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
 .coluna-tabela {
-    flex: 2;
+    flex: 1; /* Ocupa todo o resto do espaço disponível */
 }
 
 
@@ -179,5 +179,10 @@ h2 {
 @media (max-width: 900px) {
     .container {
         flex-direction: column;
+    }
+    
+    /* Garante que a coluna dos forms não tenha largura fixa em telas pequenas */
+    .coluna-forms {
+        flex-basis: auto;
     }
 }
